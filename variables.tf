@@ -4,19 +4,8 @@ variable "lambda_function_name" {
 
 variable "lambda_description" {
   default     = "Some description for your lambda"
-  description = "Some description for your lambda"
+  description = "Description to your lambda"
 }
-
-variable "lambda_code_path" {
-  description = "The path to your lamda code"
-}
-
-variable "lambda_dependencies_path" {
-  description = "The path to your dependencies path"
-  default     = ""
-  type        = string
-}
-
 variable "lambda_handler" {
   description = "Lambda handler, e.g: lambda_function.lambda_handler"
 }
@@ -26,11 +15,13 @@ variable "lambda_runtime" {
 }
 
 variable "lambda_timeout" {
-  default = 3
+  description = "Execution lambda timeout"
+  default     = 3
 }
 
 variable "lambda_memory_size" {
-  default = 128
+  description = "Runtime memory assigned to the lambda"
+  default     = 128
 }
 
 variable "lambda_policy_arn" {
@@ -42,7 +33,7 @@ variable "environment" {
   type = object({
     variables = map(string)
   })
-  default = null
+  default = {}
 }
 
 variable "tags" {
@@ -54,10 +45,6 @@ variable "lambda_layers" {
   description = "The ARNs of lambda layers"
   type        = list(string)
   default     = null
-}
-
-variable "module_dependency" {
-  default = ""
 }
 
 variable "cw_logs_retention_days" {
