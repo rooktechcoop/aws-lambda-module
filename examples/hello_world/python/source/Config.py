@@ -1,5 +1,4 @@
 import os
 
-
-class Config:
-    GREET = os.environ.get("greet")
+#class Config: #Error with class config.
+GREET = os.environ.get("greeting")

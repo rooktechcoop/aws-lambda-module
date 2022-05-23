@@ -8,6 +8,7 @@ variable "lambda_description" {
 }
 variable "lambda_handler" {
   description = "Lambda handler, e.g: lambda_function.lambda_handler"
+  default     = "lambda_function.lambda_handler"
 }
 
 variable "lambda_runtime" {
@@ -24,16 +25,17 @@ variable "lambda_memory_size" {
   default     = 128
 }
 
-variable "lambda_policy_arn" {
-  description = "The ARNs of the policies to attach to the lambda role"
-  type        = list(string)
-}
-
 variable "environment" {
   type = object({
     variables = map(string)
   })
-  default = {}
+  default = null
+}
+
+#Is the list of the files that are going to be source of the Lambda function.
+variable "lambda_code_path" {
+  type = list(string)
+  default = null
 }
 
 variable "tags" {
@@ -51,4 +53,8 @@ variable "cw_logs_retention_days" {
   description = "Number of retention days of the lambda log group in Cloudwatch"
   type        = number
   default     = 14
+}
+
+variable "lambda_policy_basic" {
+  default = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
