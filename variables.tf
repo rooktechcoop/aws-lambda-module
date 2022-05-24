@@ -58,3 +58,11 @@ variable "cw_logs_retention_days" {
 variable "lambda_policy_basic" {
   default = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
+
+variable "iam_source_name" {
+  type        = map(string)
+  description = ""
+  default = {
+    default = "*"
+  }
+}

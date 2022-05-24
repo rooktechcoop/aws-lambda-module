@@ -5,7 +5,7 @@
         "Sid": "Stmt1652812550192",
         "Action": "logs:*",
         "Effect": "Allow",
-        "Resource": "*"
+        "Resource": "${resource}"
       }
     ]
   }
