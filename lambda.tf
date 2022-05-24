@@ -1,5 +1,5 @@
 data "archive_file" "lambda_zip" {
-  type        = "zip"
+  type = "zip"
   dynamic "source" {
     for_each = var.lambda_code_path
 
@@ -20,11 +20,11 @@ resource "aws_lambda_function" "lambda" {
   role             = aws_iam_role.lambda_role.arn
   description      = var.lambda_description
   handler          = var.lambda_handler
-  runtime     = var.lambda_runtime
-  tags        = var.tags
-  layers      = var.lambda_layers
-  timeout     = var.lambda_timeout
-  memory_size = var.lambda_memory_size
+  runtime          = var.lambda_runtime
+  tags             = var.tags
+  layers           = var.lambda_layers
+  timeout          = var.lambda_timeout
+  memory_size      = var.lambda_memory_size
 
   environment {
     variables = {
@@ -45,7 +45,7 @@ resource "aws_cloudwatch_log_group" "lambda_cwgroup" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name = "${var.lambda_function_name}-role"
+  name               = "${var.lambda_function_name}-role"
   assume_role_policy = file("${path.module}/policies/LambdaBasicExecution.json")
 }
 

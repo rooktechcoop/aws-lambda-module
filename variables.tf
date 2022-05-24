@@ -34,7 +34,7 @@ variable "environment" {
 
 #Is the list of the files that are going to be source of the Lambda function.
 variable "lambda_code_path" {
-  type = list(string)
+  type    = list(string)
   default = null
 }
 
