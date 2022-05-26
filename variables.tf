@@ -4,21 +4,11 @@ variable "lambda_function_name" {
 
 variable "lambda_description" {
   default     = "Some description for your lambda"
-  description = "Some description for your lambda"
+  description = "Description to your lambda"
 }
-
-variable "lambda_code_path" {
-  description = "The path to your lamda code"
-}
-
-variable "lambda_dependencies_path" {
-  description = "The path to your dependencies path"
-  default     = ""
-  type        = string
-}
-
 variable "lambda_handler" {
   description = "Lambda handler, e.g: lambda_function.lambda_handler"
+  default     = "lambda_function.lambda_handler"
 }
 
 variable "lambda_runtime" {
@@ -26,22 +16,25 @@ variable "lambda_runtime" {
 }
 
 variable "lambda_timeout" {
-  default = 3
+  description = "Execution lambda timeout"
+  default     = 3
 }
 
 variable "lambda_memory_size" {
-  default = 128
-}
-
-variable "lambda_policy_arn" {
-  description = "The ARNs of the policies to attach to the lambda role"
-  type        = list(string)
+  description = "Runtime memory assigned to the lambda"
+  default     = 128
 }
 
 variable "environment" {
   type = object({
     variables = map(string)
   })
+  default = null
+}
+
+#Is the list of the files that are going to be source of the Lambda function.
+variable "lambda_code_path" {
+  type    = list(string)
   default = null
 }
 
@@ -56,12 +49,20 @@ variable "lambda_layers" {
   default     = null
 }
 
-variable "module_dependency" {
-  default = ""
-}
-
 variable "cw_logs_retention_days" {
   description = "Number of retention days of the lambda log group in Cloudwatch"
   type        = number
   default     = 14
+}
+
+variable "lambda_policy_basic" {
+  default = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+variable "iam_source_name" {
+  type        = map(string)
+  description = ""
+  default = {
+    default = "*"
+  }
 }
