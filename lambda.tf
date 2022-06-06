@@ -45,8 +45,8 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_iam_role_policy_attachment" {
-  count = length(var.lambda_policy_arn)
+  for_each = var.lambda_policy_arn
 
   role       = aws_iam_role.lambda_role.name
-  policy_arn = var.lambda_policy_arn[count.index] #element(var.lambda_policy_arn, count.index)
+  policy_arn = var.lambda_policy_arn[each.key] #element(var.lambda_policy_arn, count.index)
 }

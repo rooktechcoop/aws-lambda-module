@@ -12,7 +12,7 @@ module "hello_world" {
   lambda_code_path     = ["${path.module}/python/source/hello_world.py", "${path.module}/python/source/Config.py"]
   lambda_handler       = "hello_world.lambda_handler"
   lambda_runtime       = "python3.8"
-  lambda_policy_arn    = [aws_iam_policy.Lambda_Watchlogs.arn]
+  lambda_policy_arn    = {"log" = aws_iam_policy.Lambda_Watchlogs.arn, "s3" = aws_iam_policy.Lambda_S3.arn}
   lambda_description   = "Hello world lambda module"
   lambda_timeout       = "240"
 
@@ -26,6 +26,9 @@ module "hello_world" {
 }
 ```
 
+## Observation:
+- For the lambda_policy_arn have to determinate a key like the example before the arn variable.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -37,7 +40,7 @@ module "hello_world" {
 | lambda_policy_arn | A list of policie's arn to attach to your lambda role | list(string) | `-` | yes |
 | lambda_description | Lambda runtime, e.g: `python3.8` | string | `"Some description for your lambda"` | no |
 | lambda_timeout | A list of policie's arn to attach to your lambda role | int | 3 | no |
-| lambda\_layers| Dictionary of lambda layers arns | list | `null` | no |
+| lambda_layers| Dictionary of lambda layers arns | list | `null` | no |
 | tags | Tags to attach to your function | map | `null` | no |
 
 

@@ -5,7 +5,7 @@ module "hello_world" {
   lambda_code_path     = ["${path.module}/python/source/hello_world.py", "${path.module}/python/source/Config.py"]
   lambda_handler       = "hello_world.lambda_handler"
   lambda_runtime       = "python3.8"
-  lambda_policy_arn    = [aws_iam_policy.Lambda_Watchlogs.arn]
+  lambda_policy_arn    = { "log" = aws_iam_policy.Lambda_Watchlogs.arn }
   lambda_description   = "Hello world lambda module"
   lambda_timeout       = "240"
 

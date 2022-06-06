@@ -69,5 +69,5 @@ variable "iam_source_name" {
 
 variable "lambda_policy_arn" {
   description = "The ARNs of the policies to attach to the lambda role"
-  type        = list(string)
+  type        = map(string)
 }
