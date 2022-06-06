@@ -26,17 +26,17 @@ resource "aws_lambda_function" "lambda" {
   timeout          = var.lambda_timeout
   memory_size      = var.lambda_memory_size
 
-  environment {
+  /* environment {
     variables = {
       greeting = "Hello"
     }
-  }
-  # dynamic "environment" {
-  #   for_each = var.environment = null ? [] : [var.environment]
-  #   content {
-  #     variables = environment.value.variables
-  #   }
-  # }
+  } */
+   dynamic "environment" {
+     for_each = var.environment
+     content {
+       variables = environment.value
+     }
+   }
 }
 
 resource "aws_cloudwatch_log_group" "lambda_cwgroup" {
@@ -55,16 +55,23 @@ resource "aws_iam_role" "lambda_role" {
 #   policy = file("${path.module}/policies/Watchlog.json")
 # }
 
-resource "aws_iam_role_policy" "lambda_iam_role_policy" {
+resource "aws_iam_role_policy_attachment" "lambda_iam_role_policy_attachment" {
+  count = length(var.lambda_policy_arn)
+
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = var.lambda_policy_arn[count.index] #element(var.lambda_policy_arn, count.index)
+}
+
+/* resource "aws_iam_role_policy" "lambda_iam_role_policy" {
   name   = "lambda_iam_role_policy"
   role   = aws_iam_role.lambda_role.name
   policy = data.template_file.example.rendered
-}
+} */
 
-data "template_file" "example" {
+/* data "template_file" "example" {
   template = file("${path.module}/policies/Watchlog.json.tpl")
 
   vars = {
     resource = "${var.iam_source_name.default}"
   }
-}
+} */
