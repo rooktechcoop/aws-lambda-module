@@ -28,9 +28,9 @@ output "lambda_name" {
   value       = aws_lambda_function.lambda.function_name
 }
 
- output "lambda_invoke_uri_arn" {
-   value = aws_lambda_function.lambda.invoke_arn
- }
+output "lambda_invoke_uri_arn" {
+  value = aws_lambda_function.lambda.invoke_arn
+}
 
 output "output_base64sha256" {
   value = filebase64sha256(data.archive_file.lambda_zip.output_path)

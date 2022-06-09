@@ -26,12 +26,12 @@ resource "aws_lambda_function" "lambda" {
   timeout          = var.lambda_timeout
   memory_size      = var.lambda_memory_size
 
-   dynamic "environment" {
-     for_each = var.environment
-     content {
-       variables = environment.value
-     }
-   }
+  dynamic "environment" {
+    for_each = var.environment
+    content {
+      variables = environment.value
+    }
+  }
 }
 
 resource "aws_cloudwatch_log_group" "lambda_cwgroup" {
@@ -44,6 +44,22 @@ resource "aws_iam_role" "lambda_role" {
   assume_role_policy = file("${path.module}/policies/LambdaBasicExecution.json")
 }
 
+data "aws_iam_policy_document" "policy_lambda_logs" {
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*:*"]
+  }
+}
+resource "aws_iam_role_policy" "log_policy" {
+  name   = "lambda_log_policy"
+  role   = aws_iam_role.lambda_role.id
+  policy = data.aws_iam_policy_document.policy_lambda_logs.json
+}
 resource "aws_iam_role_policy_attachment" "lambda_iam_role_policy_attachment" {
   for_each = var.lambda_policy_arn
 
