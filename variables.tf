@@ -66,3 +66,9 @@ variable "iam_source_name" {
     default = "*"
   }
 }
+
+variable "lambda_policy_arn" {
+  description = "The ARNs of the policies to attach to the lambda role"
+  type        = map(string)
+  default     = {}
+}
