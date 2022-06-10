@@ -51,8 +51,8 @@ data "aws_iam_policy_document" "policy_lambda_logs" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    effect    = "Allow"
-    resources = ["arn:aws:logs:*:*:*"]
+    effect = "Allow"
+    resources = [aws_cloudwatch_log_group.lambda_cwgroup.arn]
   }
 }
 resource "aws_iam_role_policy" "log_policy" {
@@ -63,6 +63,6 @@ resource "aws_iam_role_policy" "log_policy" {
 resource "aws_iam_role_policy_attachment" "lambda_iam_role_policy_attachment" {
   for_each = var.lambda_policy_arn
 
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = var.lambda_policy_arn[each.key] #element(var.lambda_policy_arn, count.index)
+  role = aws_iam_role.lambda_role.name
+  policy_arn = each.value
 }
