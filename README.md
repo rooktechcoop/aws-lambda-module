@@ -35,8 +35,8 @@ module "hello_world" {
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:------:|:-----:|
 | lambda_function_name | A name for the lambda | string | `-` | yes |
-| lambda_folder_code_path| The path to the folder for your lamda code and packages. Conflicts whith lambda_files_code_path | string | `null` | no 
-| lambda_files_code_path| The path to the files for your lamda code and packages. Conflicts whith lambda_folder_code_path | List | `[]` | no |
+| lambda_folder_code_path| The path to the folder for your lamda code and packages. Conflicts whith `lambda_files_code_path` | string | `null` | no 
+| lambda_files_code_path| The path to the files for your lamda code and packages. Conflicts whith `lambda_folder_code_path` | List | `[]` | no |
 | lambda_handler | Lambda handler, e.g: `lambda_function.lambda_handler` | string | `lambda_function.lambda_handler` | yes |
 | lambda_runtime | Lambda runtime, e.g: `python3.8` | string | - | yes |
 | lambda_policy_arn | A list of policie's arn to attach to your lambda role | list(string) | `-` | no|
