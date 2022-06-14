@@ -29,7 +29,7 @@ variable "environment" {
   type = object({
     variables = map(string)
   })
-  default = null
+  default = {}
 }
 
 #Is the list of the files that are going to be source of the Lambda function.
