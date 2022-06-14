@@ -1,7 +1,9 @@
 data "archive_file" "lambda_zip" {
   type = "zip"
+
+  source_dir = var.lambda_folder_code_path
   dynamic "source" {
-    for_each = var.lambda_code_path
+    for_each = var.lambda_files_code_path
 
     content {
       filename = basename(source.value)
