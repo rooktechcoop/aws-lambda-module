@@ -25,13 +25,9 @@ variable "lambda_memory_size" {
   default     = 128
 }
 
-variable "environment" {
-  type = object({
-    variables = map(string)
-  })
-   default = {
-     variables:{}
-   }
+variable "environment_variables" {
+  type    = map(string)
+  default = {}
 }
 
 #Is the list of the files that are going to be source of the Lambda function.

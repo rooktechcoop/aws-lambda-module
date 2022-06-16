@@ -8,10 +8,9 @@ module "hello_world" {
   lambda_description      = "Hello world lambda module"
   lambda_timeout          = "240"
 
-  environment = {
-    variables = {
-      greeting = "World"
-    }
+  environment_variables = {
+    greeting = "hello",
+    test     = 123465
   }
 
   tags = { "state" = "terraform managed" }

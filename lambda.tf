@@ -29,10 +29,16 @@ resource "aws_lambda_function" "lambda" {
   memory_size      = var.lambda_memory_size
 
   dynamic "environment" {
-    for_each = var.environment
+    #   #for_each = length(keys(var.environment_variables)) == 0 ? [] : [true]
+    #   #for_each = length(keys(var.environment_variables)) > 0 ? { for k,v in var.environment_variables : k=> v} : {}#[] : [true]#{ for env in var.environment_variables : "var" => env } : []
+
+    for_each = length(keys(var.environment_variables)) > 0 ? [var.environment_variables] : []
+    # for_each=[var.environment_variables]
     content {
-      variables = environment.value
+      variables = var.environment_variables
     }
+    #  environment {
+    #     variables =  var.environment_variables
   }
 }
 
