@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "policy_lambda_logs" {
       "logs:PutLogEvents"
     ]
     effect    = "Allow"
-    resources = [aws_cloudwatch_log_group.lambda_cwgroup.arn]
+    resources = ["${aws_cloudwatch_log_group.lambda_cwgroup.arn}:*"]
   }
 }
 resource "aws_iam_role_policy" "log_policy" {
