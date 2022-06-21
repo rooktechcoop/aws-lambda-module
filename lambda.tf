@@ -1,7 +1,9 @@
 data "archive_file" "lambda_zip" {
   type = "zip"
+
+  source_dir = var.lambda_folder_code_path
   dynamic "source" {
-    for_each = var.lambda_code_path
+    for_each = var.lambda_files_code_path
 
     content {
       filename = basename(source.value)
@@ -27,9 +29,9 @@ resource "aws_lambda_function" "lambda" {
   memory_size      = var.lambda_memory_size
 
   dynamic "environment" {
-    for_each = var.environment
+    for_each = length(keys(var.environment_variables)) > 0 ? [var.environment_variables] : []
     content {
-      variables = environment.value
+      variables = var.environment_variables
     }
   }
 }
@@ -51,8 +53,8 @@ data "aws_iam_policy_document" "policy_lambda_logs" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    effect = "Allow"
-    resources = [aws_cloudwatch_log_group.lambda_cwgroup.arn]
+    effect    = "Allow"
+    resources = ["${aws_cloudwatch_log_group.lambda_cwgroup.arn}:*"]
   }
 }
 resource "aws_iam_role_policy" "log_policy" {
@@ -63,6 +65,6 @@ resource "aws_iam_role_policy" "log_policy" {
 resource "aws_iam_role_policy_attachment" "lambda_iam_role_policy_attachment" {
   for_each = var.lambda_policy_arn
 
-  role = aws_iam_role.lambda_role.name
+  role       = aws_iam_role.lambda_role.name
   policy_arn = each.value
 }
