@@ -23,7 +23,6 @@ resource "aws_lambda_function" "lambda" {
   description      = var.lambda_description
   handler          = var.lambda_handler
   runtime          = var.lambda_runtime
-  tags             = var.tags
   layers           = var.lambda_layers
   timeout          = var.lambda_timeout
   memory_size      = var.lambda_memory_size
@@ -34,16 +33,36 @@ resource "aws_lambda_function" "lambda" {
       variables = var.environment_variables
     }
   }
+
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "lambda_cwgroup" {
   name              = "/aws/lambda/${var.lambda_function_name}"
   retention_in_days = var.cw_logs_retention_days
+
+  tags = var.tags
+}
+
+data "aws_iam_policy_document" "lambda_assume_role_policy" {
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_iam_role" "lambda_role" {
   name               = "${var.lambda_function_name}-role"
-  assume_role_policy = file("${path.module}/policies/LambdaBasicExecution.json")
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "policy_lambda_logs" {
@@ -57,11 +76,13 @@ data "aws_iam_policy_document" "policy_lambda_logs" {
     resources = ["${aws_cloudwatch_log_group.lambda_cwgroup.arn}:*"]
   }
 }
+
 resource "aws_iam_role_policy" "log_policy" {
   name   = "lambda_log_policy"
   role   = aws_iam_role.lambda_role.id
   policy = data.aws_iam_policy_document.policy_lambda_logs.json
 }
+
 resource "aws_iam_role_policy_attachment" "lambda_iam_role_policy_attachment" {
   for_each = var.lambda_policy_arn
 
